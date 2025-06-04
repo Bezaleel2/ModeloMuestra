@@ -1,0 +1,75 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ titulo_pagina|default:"Inventario de Almacén" }}</title>
+    <link rel="stylesheet" href="{% static 'css/global_styles.css' %}">
+    <!-- {# Si tienes un CSS específico para lista_productos, añádelo aquí también #} -->
+    <link rel="stylesheet" href="{% static 'css/almacen/lista_productos.css' %}">
+    <!-- {# AÑADIDO: Enlace al CSS de impresión #} -->
+    <link rel="stylesheet" href="{% static 'css/print.css' %}" media="print">
+</head>
+<body>
+    <div class="main-container">
+        <div class="content-area">
+            <header class="page-header">
+                <h1>{{ titulo_pagina|default:"Inventario de Almacén" }}</h1>
+            </header>
+
+            <div class="actions-bar no-print"> 
+                <!-- {# Añadimos 'no-print' #} -->
+                <a href="{% url 'almacen:agregar_producto' %}" class="btn btn-success">Agregar Nuevo Producto</a>
+                <!-- {# AÑADIDO: Botón de Imprimir #} -->
+                <button type="button" onclick="window.print();" class="btn btn-secondary">
+                    Imprimir Inventario
+                </button>
+            </div>
+
+            {% if messages %}
+                <ul class="messages">
+                    {% for message in messages %}
+                        <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+
+            {% if productos %}
+                <div class="table-responsive">
+                    <table class="data-table"> 
+                        <!-- {/* print.css ya tiene estilos para .data-table */} -->
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Nombre del Producto</th>
+                                <th>Proveedor</th>
+                                <th>Cantidad</th>
+                                <th>No. Orden de Compra</th>
+                                <th class="no-print">Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for producto in productos %}
+                            <tr>
+                                <td>{{ producto.id }}</td>
+                                <td>{{ producto.nombre_producto }}</td>
+                                <td>{{ producto.proveedor.nombre|default:"N/A" }}</td>
+                                <td>{{ producto.cantidad }}</td>
+                                <td>{{ producto.numero_orden_compra|default:"N/A" }}</td>
+                                <td class="no-print">
+                                    <a href="{% url 'almacen:editar_producto' producto.pk %}" class="btn btn-sm btn-info">Editar</a>
+                                    <a href="{% url 'almacen:eliminar_producto' producto.pk %}" class="btn btn-sm btn-danger">Eliminar</a>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            {% else %}
+                <p class="no-data">No hay productos registrados en el almacén. Intenta <a href="{% url 'almacen:agregar_producto' %}">agregar uno nuevo</a>.</p>
+            {% endif %}
+        </div>
+    </div>
+</body>
+</html>

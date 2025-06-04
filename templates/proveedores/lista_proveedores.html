@@ -1,0 +1,71 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ titulo_pagina|default:"Listado de Proveedores" }}</title>
+    <link rel="stylesheet" href="{% static 'css/global_styles.css' %}">
+</head>
+<body>
+    <div class="main-container">
+        <div class="content-area">
+            <header class="page-header">
+                <h1>{{ titulo_pagina|default:"Listado de Proveedores" }}</h1>
+            </header>
+
+            <div class="actions-bar">
+                <a href="{% url 'proveedores:agregar_proveedor' %}" class="btn btn-success">Agregar Nuevo Proveedor</a>
+            </div>
+
+            {% if messages %}
+                <ul class="messages">
+                    {% for message in messages %}
+                        <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+
+            {% if proveedores %}
+                <div class="table-responsive">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Nombre del Proveedor</th>
+                                <th>Dirección</th>
+                                <th>Teléfono</th>
+                                <th>¿Ofrece Crédito?</th>
+                                {# <th>Acciones</th> #}
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for proveedor in proveedores %}
+                            <tr>
+                                <td>{{ proveedor.id }}</td>
+                                <td>{{ proveedor.nombre }}</td>
+                                <td>{{ proveedor.direccion|default:"N/A" }}</td>
+                                <td>{{ proveedor.telefono|default:"N/A" }}</td>
+                                <td>
+                                    {% if proveedor.credito %}
+                                        <span class="status-active">Sí</span>
+                                    {% else %}
+                                        <span class="status-inactive">No</span>
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    <a href="#" class="btn btn-sm btn-info">Editar</a>
+                                    <a href="#" class="btn btn-sm btn-danger">Eliminar</a>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            {% else %}
+                <p class="no-data">No hay proveedores registrados todavía. Puedes <a href="{% url 'proveedores:agregar_proveedor' %}">agregar uno nuevo</a>.</p>
+            {% endif %}
+        </div>
+    </div>
+</body>
+</html>

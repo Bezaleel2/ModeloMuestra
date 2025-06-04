@@ -1,0 +1,89 @@
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    margin: 20px;
+    background-color: #f8f9fa; /* Un gris un poco más claro */
+    color: #212529; /* Color de texto principal más oscuro */
+    line-height: 1.6;
+}
+
+.container {
+    background-color: #ffffff;
+    padding: 25px 30px; /* Un poco más de padding */
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Sombra un poco más pronunciada */
+    max-width: 900px; /* Un poco más ancho para tablas */
+    margin: 30px auto; /* Más margen superior e inferior */
+}
+
+h1 {
+    color: #0056b3; /* Azul más oscuro para el título */
+    text-align: center;
+    margin-bottom: 30px;
+    font-weight: 600; /* Un poco más de peso a la fuente */
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 25px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05); /* Sombra sutil para la tabla */
+}
+
+th, td {
+    border: 1px solid #dee2e6; /* Borde un poco más claro */
+    padding: 12px 15px; /* Padding consistente */
+    text-align: left;
+    vertical-align: middle; /* Alineación vertical */
+}
+
+th {
+    background-color: #007bff; /* Azul primario de Bootstrap */
+    color: white;
+    font-weight: 600; /* Cabeceras en negrita */
+    text-transform: uppercase; /* Mayúsculas para cabeceras */
+    font-size: 0.9em;
+}
+
+tr:nth-child(even) {
+    background-color: #f2f3f5; /* Gris muy claro para filas pares */
+}
+
+tr:hover {
+    background-color: #e9ecef; /* Un gris un poco más oscuro al pasar el mouse */
+}
+
+.no-users {
+    text-align: center;
+    color: #6c757d; /* Color de texto secundario */
+    margin-top: 40px; /* Más espacio si no hay usuarios */
+    font-size: 1.1em;
+}
+
+.add-user-link {
+    display: inline-block;
+    margin-bottom: 25px;
+    padding: 10px 20px; /* Padding más generoso */
+    background-color: #28a745; /* Verde Bootstrap */
+    color: white;
+    text-decoration: none;
+    border-radius: 5px;
+    font-weight: 500;
+    transition: background-color 0.2s ease-in-out; /* Transición suave */
+}
+
+.add-user-link:hover {
+    background-color: #218838; /* Verde más oscuro al pasar el mouse */
+    text-decoration: none;
+    color: white;
+}
+
+/* Para los "Sí/No" de los booleanos, si quieres darles un poco de estilo */
+td span.status-active {
+    color: #28a745; /* Verde */
+    font-weight: bold;
+}
+
+td span.status-inactive {
+    color: #dc3545; /* Rojo */
+    font-weight: bold;
+}

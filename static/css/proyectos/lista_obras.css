@@ -1,0 +1,144 @@
+/* static/css/proyectos/lista_obras.css */
+body {
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    background-color: #eef1f5; /* Un fondo suave */
+    color: #333a40;
+    margin: 0;
+    padding: 0;
+    line-height: 1.5;
+}
+
+.main-container {
+    display: flex;
+}
+
+.content-area {
+    flex-grow: 1;
+    padding: 25px 35px;
+    max-width: 1100px; /* Ancho para tablas más grandes */
+    margin: 25px auto;
+    background-color: #ffffff;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+.page-header h1 {
+    color: #343a40;
+    margin-bottom: 20px;
+    font-size: 2em; /* Título más grande */
+    font-weight: 600;
+    border-bottom: 3px solid #007bff; /* Borde inferior azul */
+    padding-bottom: 15px;
+}
+
+.actions-bar {
+    margin-bottom: 25px;
+    text-align: right; /* Botón a la derecha */
+}
+
+.btn {
+    padding: 10px 18px;
+    border: none;
+    border-radius: 5px;
+    font-size: 0.95em;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-block;
+    transition: all 0.2s ease-in-out;
+    font-weight: 500;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.btn-success {
+    background-color: #28a745;
+    color: white;
+}
+
+.btn-success:hover {
+    background-color: #218838;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+}
+
+.btn-info {
+    background-color: #17a2b8;
+    color: white;
+}
+.btn-info:hover { background-color: #138496; }
+
+.btn-danger {
+    background-color: #dc3545;
+    color: white;
+}
+.btn-danger:hover { background-color: #c82333; }
+
+.btn-sm { /* Botones más pequeños para acciones en tabla */
+    padding: 6px 12px;
+    font-size: 0.8em;
+}
+
+
+.table-responsive {
+    overflow-x: auto; /* Para que la tabla sea responsive en pantallas pequeñas */
+}
+
+.table-obras {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    font-size: 0.95em;
+}
+
+.table-obras th,
+.table-obras td {
+    border: 1px solid #e0e0e0; /* Borde más sutil */
+    padding: 12px 15px;
+    text-align: left;
+    vertical-align: middle;
+}
+
+.table-obras thead th {
+    background-color: #343a40; /* Cabecera oscura */
+    color: #ffffff;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.table-obras tbody tr:nth-child(even) {
+    background-color: #f8f9fa;
+}
+
+.table-obras tbody tr:hover {
+    background-color: #e9ecef; /* Efecto hover sutil */
+}
+
+.no-data {
+    text-align: center;
+    color: #5a6268;
+    margin-top: 30px;
+    padding: 20px;
+    background-color: #fdfdfe;
+    border: 1px dashed #ced4da;
+    border-radius: 5px;
+}
+
+.no-data a {
+    color: #007bff;
+    text-decoration: underline;
+}
+
+/* Mensajes de Django (puedes usar los mismos de agregar_obra.css si los centralizas) */
+.messages {
+    list-style: none;
+    padding: 0;
+    margin-bottom: 20px;
+}
+.messages li {
+    padding: 12px 18px;
+    margin-bottom: 10px;
+    border-radius: 5px;
+    font-size: 0.95em;
+}
+.messages li.success { background-color: #d4edda; color: #155724; border: 1px solid #c3e6cb; }
+.messages li.error { background-color: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; }
+.messages li.info { background-color: #d1ecf1; color: #0c5460; border: 1px solid #bee5eb; }

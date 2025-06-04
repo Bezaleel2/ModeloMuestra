@@ -1,0 +1,67 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ titulo_pagina|default:"Iniciar Sesión" }}</title>
+    <link rel="stylesheet" href="{% static 'css/login.css' %}">
+</head>
+<body>
+    <div class="login-container">
+        <div class="login-box">
+            <div class="logo">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <rect x="2" y="2" width="20" height="20" rx="2" ry="2"></rect>
+                    <path d="M16 17v-3a2 2 0 0 0-2-2H5"></path>
+                </svg>
+                <span>LOGO</span>
+            </div>
+            <h2>Nombre de la Empresa</h2>
+
+            {% if messages %}
+                <ul class="messages-login">
+                    {% for message in messages %}
+                        <li{% if message.tags %} class="message {{ message.tags }}"{% endif %}>{{ message }}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+
+            <!-- {# Mostrar errores generales del formulario (ej. "Usuario o contraseña incorrectos") #} -->
+            {% if form.non_field_errors %}
+                <div class="form-errors">
+                    {% for error in form.non_field_errors %}
+                        <p class="error-message">{{ error }}</p>
+                    {% endfor %}
+                </div>
+            {% endif %}
+
+            <form method="post" action="{% url 'login' %}"> {# Usamos la etiqueta url para la acción #}
+                {% csrf_token %}
+                
+                <div class="input-group">
+                    <label for="{{ form.username.id_for_label }}">Usuario</label>
+                    {{ form.username }} {# Renderiza el campo username del formulario Django #}
+                    {% for error in form.username.errors %}
+                        <p class="error-message">{{ error }}</p>
+                    {% endfor %}
+                </div>
+                
+                <div class="input-group">
+                    <label for="{{ form.password.id_for_label }}">Contraseña</label>
+                    {{ form.password }} {# Renderiza el campo password del formulario Django #}
+                    {% for error in form.password.errors %}
+                        <p class="error-message">{{ error }}</p>
+                    {% endfor %}
+                </div>
+                
+                <button type="submit" class="login-button">Iniciar Sesión</button>
+            </form>
+            <div class="links">
+                <a>Eslogan de la empresa</a>
+            </div>
+            <p class="footer-text">Modelo © 2025</p>
+        </div>
+    </div>
+</body>
+</html>

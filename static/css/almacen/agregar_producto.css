@@ -1,0 +1,123 @@
+/* static/css/almacen/agregar_producto.css */
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f4f6f8;
+    color: #333;
+    margin: 0;
+    padding: 20px;
+}
+
+.content-area {
+    max-width: 800px;
+    margin: 20px auto;
+    background-color: #fff;
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+
+.page-header h1 {
+    color: #333;
+    margin-bottom: 25px;
+    font-size: 1.8em;
+    text-align: center;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 15px;
+}
+
+.form-wrapper {
+    /* Contenedor del formulario */
+}
+
+.product-form {
+    display: flex;
+    flex-direction: column;
+}
+
+.form-header-fields {
+    display: flex;
+    flex-direction: column; /* Por defecto, uno debajo del otro */
+    align-items: flex-end; /* Alinea los items (campos) a la derecha del contenedor */
+    margin-bottom: 20px;
+    width: 100%; /* Ocupa todo el ancho para que align-items funcione respecto al contenedor */
+}
+
+.form-header-fields .form-field {
+    width: 50%; /* O el ancho que desees para estos campos */
+    max-width: 300px; /* Limita el ancho máximo */
+    margin-bottom: 10px;
+}
+.form-header-fields .form-field:last-child {
+    margin-bottom: 0;
+}
+
+
+.form-row {
+    display: flex;
+    justify-content: space-between; /* Espacio entre los campos */
+    gap: 20px; /* Espacio entre los campos si flex-basis no es exacto */
+    margin-bottom: 20px;
+}
+
+.form-row .form-field {
+    flex-basis: 48%; /* Cada campo ocupa un poco menos de la mitad para dejar espacio para el gap */
+}
+
+.form-field {
+    margin-bottom: 20px; /* Espacio para campos que van en una sola línea */
+}
+
+.form-field label {
+    display: block;
+    margin-bottom: 6px;
+    font-weight: bold;
+    color: #555;
+}
+
+.form-field input[type="text"],
+.form-field input[type="number"],
+.form-field select, /* Para el campo proveedor */
+.form-field textarea {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box; /* Importante! */
+    font-size: 1em;
+}
+.form-field .form-control-select { /* Estilo específico si usas esta clase para el select de proveedor */
+    /* Tus estilos para el select si son diferentes */
+}
+
+
+.form-error {
+    color: #e74c3c;
+    font-size: 0.85em;
+    margin-top: 5px;
+}
+
+.form-actions {
+    margin-top: 30px;
+    display: flex;
+    justify-content: flex-end; /* Botones a la derecha */
+    gap: 10px;
+}
+
+.btn {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    font-size: 1em;
+    cursor: pointer;
+    text-decoration: none;
+}
+.btn-primary { background-color: #007bff; color: white; }
+.btn-primary:hover { background-color: #0056b3; }
+.btn-secondary { background-color: #6c757d; color: white; }
+.btn-secondary:hover { background-color: #545b62; }
+
+/* Mensajes de Django */
+.messages { list-style: none; padding: 0; margin-bottom: 20px; }
+.messages li { padding: 10px 15px; margin-bottom: 10px; border-radius: 4px; }
+.messages li.success { background-color: #d4edda; color: #155724; border: 1px solid #c3e6cb; }
+.messages li.error { background-color: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; }

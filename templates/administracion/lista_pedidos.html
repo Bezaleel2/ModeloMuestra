@@ -1,0 +1,64 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ titulo_pagina|default:"Listado de Pedidos" }}</title>
+    <link rel="stylesheet" href="{% static 'css/global_styles.css' %}">
+</head>
+<body>
+    <div class="main-container">
+        <div class="content-area">
+            <header class="page-header">
+                <h1>{{ titulo_pagina|default:"Listado de Pedidos" }}</h1>
+            </header>
+
+            <div class="actions-bar">
+                <a href="{% url 'administracion:agregar_pedido' %}" class="btn btn-success">Registrar Nuevo Pedido</a>
+            </div>
+
+            {% if messages %}
+                <ul class="messages">
+                    {% for message in messages %}
+                        <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+
+            {% if pedidos %}
+                <div class="table-responsive">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                            <th>ID Pedido</th>
+                            <th>Creado por</th>
+                            <th>Fecha del Pedido</th>
+                            <th>Nº de Ítems</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for pedido in pedidos %}
+                        <tr>
+                            <td>#{{ pedido.id }}</td>
+                            <td>{{ pedido.nombre_creador }}</td>
+                            <td>{{ pedido.fecha_pedido|date:"d/m/Y H:i" }}</td>
+                            <td>{{ pedido.items.count }}</td>
+                            <td>
+                                <a href="{% url 'administracion:detalle_pedido' pedido.pk %}" class="btn btn-sm btn-view">Ver</a> {# NUEVO BOTÓN/ENLACE #}
+                                {# <a href="#" class="btn btn-sm btn-edit">Editar</a> #} {# Si implementas editar pedido #}
+                                <a href="{% url 'administracion:eliminar_pedido' pedido.pk %}" class="btn btn-sm btn-danger">Eliminar</a>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        {% else %}
+                <p class="no-data">No hay pedidos registrados todavía. Intenta <a href="{% url 'administracion:agregar_pedido' %}">agregar uno nuevo</a>.</p>
+            {% endif %}
+        </div>
+    </div>
+</body>
+</html>

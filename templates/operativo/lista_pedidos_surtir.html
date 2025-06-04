@@ -1,0 +1,80 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ titulo_pagina|default:"Lista de Pedidos para Surtir" }}</title>
+    <link rel="stylesheet" href="{% static 'css/operativo/lista_pedidos_surtir.css' %}">
+    <!-- {# AÑADIDO: Enlace al CSS de impresión #} -->
+    <link rel="stylesheet" href="{% static 'css/print.css' %}" media="print">
+</head>
+<body>
+    <div class="main-container">
+        <div class="content-area">
+            <header class="page-header">
+                <h1>{{ titulo_pagina|default:"Lista de Pedidos para Surtir" }}</h1>
+            </header>
+
+            <!-- {# AÑADIDO: Barra de acciones con botón de imprimir #} -->
+            <div class="actions-bar no-print"> 
+                <!-- {# Añadimos 'no-print' para ocultar toda la barra al imprimir #} -->
+                <!-- {# Si tienes un botón para agregar nuevo pedido para esta app, iría aquí también #} -->
+                <button type="button" onclick="window.print();" class="btn btn-secondary">
+                    Imprimir Lista
+                </button>
+            </div>
+
+            {% if messages %}
+                <ul class="messages">
+                    {% for message in messages %}
+                        <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+
+            {% if pedidos %}
+                <div class="table-responsive">
+                    <table class="table-pedidos"> 
+                        <!-- {/* print.css ya tiene estilos para .table-pedidos */} -->
+                        <thead>
+                            <tr>
+                                <th>ID Pedido</th>
+                                <th>Creado por</th>
+                                <th>Fecha del Pedido</th>
+                                <th>Productos agregados</th>
+                                <th>Estado</th>
+                                <th class="no-print">Acciones</th> 
+                                <!-- {# Ocultar columna de acciones al imprimir #} -->
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for pedido in pedidos %}
+                            <tr>
+                                <td>#{{ pedido.id }}</td>
+                                <td>{{ pedido.nombre_creador }}</td>
+                                <td>{{ pedido.fecha_pedido|date:"d/m/Y H:i" }}</td>
+                                <td>{{ pedido.items.count }}</td>
+                                <td>
+                                    <span class="status-pedido status-{{ pedido.estado|lower }}">{{ pedido.get_estado_display }}</span>
+                                </td>
+                                <td class="no-print">
+                                    <!-- {# Ocultar celda de acciones al imprimir #} -->
+                                    {% if pedido.estado != 'COMPLETADO' and pedido.estado != 'CANCELADO' %}
+                                        <a href="{% url 'operativo:surtir_pedido_accion' pedido.pk %}" class="btn btn-sm btn-process">Surtir Pedido</a>
+                                    {% else %}
+                                        <span class="text-muted">Finalizado</span>
+                                    {% endif %}
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            {% else %}
+                <p class="no-data">No hay pedidos pendientes para surtir.</p>
+            {% endif %}
+        </div>
+    </div>
+</body>
+</html>

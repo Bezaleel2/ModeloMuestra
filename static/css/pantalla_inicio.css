@@ -1,0 +1,286 @@
+body {
+    margin: 0;
+    font-family: sans-serif;
+    display: flex;
+    height: 100vh;
+    overflow: hidden;
+}
+
+.container {
+    display: flex;
+    width: 100%;
+    height: 100%;
+}
+
+#sidebar {
+    width: 230px;
+    background-color: #2c3e50e0;
+    color: #f1f3f4;
+    padding: 15px;
+    transition: width 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    height: 100%; /* Importante para que el flex-grow de nav-options funcione para el scroll */
+    box-sizing: border-box;
+}
+
+#sidebar.collapsed {
+    width: 70px;
+}
+
+#sidebar.collapsed .nav-text, 
+#sidebar.collapsed .logo span,
+#sidebar.collapsed .submenu-arrow { /* AÑADIDO: Ocultar flecha del acordeón */
+    display: none;
+}
+
+#sidebar.collapsed .nav-item > a { /* El > a es para el enlace principal del item */
+    justify-content: center;
+}
+
+/* NUEVO: Ajustar margen del icono cuando la barra está colapsada y el texto desaparece */
+#sidebar.collapsed .nav-item > a .nav-icon {
+    margin-right: 0;
+}
+
+
+.logo { display: flex; align-items: center; padding: 10px 0; margin-bottom: 20px; }
+.logo svg { width: 32px; height: 32px; margin-right: 10px; }
+.logo span { font-size: 1.5em; font-weight: bold; }
+
+/* MODIFICADO: Para el scroll en .nav-options */
+.nav-options {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    flex-grow: 1; /* <<--- AÑADIDO o ASEGURADO: Permite que este elemento crezca y ocupe el espacio vertical */
+    overflow-y: auto; /* <<--- AÑADIDO: Habilita el scroll vertical SOLO para esta lista si es necesario */
+    overflow-x: hidden;/* <<--- AÑADIDO: Previene scroll horizontal innecesario en la lista */
+}
+
+.nav-options::-webkit-scrollbar {
+    display: none; /* Oculta la barra de scroll */
+    /* Alternativamente, para hacerla muy delgada y transparente si 'display: none;' no funciona en todos los casos:
+    width: 0px;
+    height: 0px;
+    background: transparent;
+    */
+}
+
+.nav-item a {
+    display: flex;
+    align-items: center;
+    padding: 12px 0px;
+    color: #ecf0f1;
+    text-decoration: none;
+    border-radius: 4px;
+    margin-bottom: 1px; /* MODIFICADO: Un poco de espacio entre ítems principales */
+    transition: background-color 0.2s ease;
+    position: relative; /* AÑADIDO: Para posicionar la flecha del acordeón si la usas */
+}
+.nav-item a:hover, .nav-item a.active-link {
+    background-color: #27517a; 
+}
+/* .nav-item svg { width: 20px; height: 20px; margin-right: 12px; stroke-width: 2; } Lo reemplazaste por .nav-icon */
+.nav-text { font-size: 1em; }
+
+.nav-item a .nav-icon { /* Tus estilos para el icono, se mantienen */
+    width: 35px;
+    height: 35px;
+    margin-right: 10px;
+    vertical-align: middle;
+}
+
+
+/* === INICIO: NUEVOS ESTILOS PARA EL ACORDEÓN === */
+.nav-item a.has-submenu .submenu-arrow { /* Estilo para la flecha del acordeón */
+    margin-left: auto; /* Empuja la flecha a la derecha del texto */
+    font-size: 0.8em; /* O el tamaño que prefieras */
+    transition: transform 0.3s ease;
+    padding: 0 5px; /* Para mejor área de click si es un span con contenido */
+    /* display: inline-block; podrías necesitarlo dependiendo de cómo implementes la flecha */
+}
+
+.nav-item a.has-submenu .submenu-arrow::before {
+    content: '▶'; /* Flecha apuntando a la derecha (puedes usar un SVG, otro carácter o una imagen) */
+    display: inline-block; /* Para que transform funcione */
+}
+
+.nav-item a.has-submenu.submenu-active .submenu-arrow::before { /* Cuando el submenú está abierto */
+    transform: rotate(90deg); /* Gira la flecha */
+}
+
+ul.menu.nested { /* Estilos para los submenús */
+    list-style: none;
+    padding-left: 25px; /* Indentación para los sub-ítems */
+    margin-left: 10px;  /* Alinea con el texto del ítem padre, no con el icono */
+    max-height: 0;     /* Oculto por defecto */
+    overflow: hidden;  /* Necesario para la animación con max-height */
+    transition: max-height 0.3s ease-out, padding 0.3s ease-out; /* Animación suave */
+    background-color: rgba(0,0,0,0.1); /* Fondo ligeramente diferente para el submenú */
+    border-radius: 0 0 4px 4px; /* Redondeo si el ítem padre lo tiene */
+}
+
+ul.menu.nested.open { /* Clase que añade el JS para mostrar el submenú */
+    max-height: 1000px; /* Un valor suficientemente grande para mostrar todos los ítems */
+                        /* Ajusta si tienes submenús muy largos */
+    padding-top: 5px;    /* Espacio al abrir */
+    padding-bottom: 5px; /* Espacio al abrir */
+}
+
+ul.menu.nested li a { /* Estilos para los enlaces de los sub-ítems */
+    padding: 8px 10px;
+    font-size: 0.9em; /* Un poco más pequeños */
+    color: #bdc3c7;   /* Color más tenue para sub-ítems */
+    margin-bottom: 0; /* Sin margen inferior entre sub-items */
+    /* Asegúrate de que estos también tengan `display: flex` si van a tener iconos */
+}
+ul.menu.nested li a:hover {
+    color: #ecf0f1; /* Color al pasar el mouse */
+    background-color: #465e77; /* Fondo diferente al pasar el mouse */
+}
+
+/* MODIFICADO: Asegurar que los submenús estén completamente ocultos cuando la barra lateral está colapsada */
+#sidebar.collapsed ul.menu.nested,
+#sidebar.collapsed ul.menu.nested.open {
+    display: none !important; /* Forzar ocultación total */
+    max-height: 0 !important;
+    overflow: hidden !important;
+    padding: 0 !important; /* Sin padding cuando está colapsado y oculto */
+    margin: 0 !important;  /* Sin margen cuando está colapsado y oculto */
+}
+/* === FIN: NUEVOS ESTILOS PARA EL ACORDEÓN === */
+
+
+.toggle-sidebar { /* Tus estilos para el botón de colapsar, se mantienen */
+    background: #34495e;
+    color: white;
+    border: none;
+    padding: 10px;
+    cursor: pointer;
+    width: 100%;
+    margin-top: auto; 
+    border-radius: 4px;
+}
+.toggle-sidebar svg { width: 20px; height: 20px; transition: transform 0.3s ease; }
+#sidebar.collapsed .toggle-sidebar svg {
+    transform: rotate(180deg);
+}
+
+/* Tus estilos para #content, .main-header, y Pestañas se mantienen igual */
+#content {
+    flex-grow: 1;
+    padding: 0; 
+    background-color: #ecf0f1; 
+    display: flex;
+    flex-direction: column; 
+    height: 100vh; 
+    overflow: hidden; 
+}
+
+.main-header {
+    padding: 10px 20px;
+    background-color: #2c3e50;
+    border-bottom: 1px solid #dadedf;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+    z-index: 10; 
+}
+.main-header h1 { margin: 0 0 5px 0; font-size: 1.8em; color: #fffdfd;}
+.main-header p { margin: 0; color: #fdfdfd; }
+
+#tab-container {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1; 
+    overflow: hidden; 
+}
+/* ... (resto de tus estilos para #tab-bar, .tab-button, .close-tab, #tab-content-area, .tab-pane, #welcome-message) ... */
+/* Pegaré los que me diste para asegurar que los tengamos: */
+
+#tab-bar {
+    display: flex;
+    flex-wrap: nowrap; 
+    background-color: #dde2e5; 
+    padding: 5px 5px 0 5px;
+    overflow-x: auto; 
+    overflow-y: hidden;
+    border-bottom: 1px solid #c5cacf;
+}
+
+.tab-button {
+    background-color: #f0f2f4;
+    border: 1px solid #c5cacf;
+    border-bottom: none; 
+    padding: 8px 15px;
+    margin-right: 3px;
+    cursor: pointer;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+    font-size: 0.9em;
+    color: #333;
+    max-width: 200px; 
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.tab-button:hover {
+    background-color: #e4e8eb;
+}
+
+.tab-button.active {
+    background-color: #ffffff; 
+    border-bottom: 1px solid #ffffff; 
+    color: #007bff;
+    font-weight: bold;
+}
+
+.close-tab {
+    margin-left: 10px;
+    font-size: 1.2em;
+    line-height: 1;
+    padding: 0 4px;
+    border-radius: 50%;
+    font-weight: bold;
+}
+.close-tab:hover {
+    background-color: #f08080; 
+    color: white;
+}
+
+#tab-content-area {
+    flex-grow: 1; 
+    background-color: #ffffff; 
+    position: relative; 
+    overflow: auto; 
+}
+
+.tab-pane {
+    width: 100%;
+    height: 100%; 
+    display: none; 
+    box-sizing: border-box;
+}
+
+.tab-pane.active {
+    display: block; 
+}
+
+#welcome-message {
+    padding: 40px;
+    text-align: center;
+    font-size: 1.5em;
+    color: #777;
+}
+#welcome-message.active { 
+    display: block;
+}
+
+.tab-pane iframe {
+    width: 100%;
+    height: 100%;
+    border: none;
+}

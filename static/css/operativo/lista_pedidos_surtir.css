@@ -1,0 +1,151 @@
+body {
+    font-family: 'Open Sans', sans-serif;
+    background-color: #f1f4f7; /* Un fondo ligeramente diferente, más operativo */
+    color: #3a3f51;
+    margin: 0;
+    padding: 20px;
+    line-height: 1.55;
+}
+
+.main-container {
+    /* Ajustes si usas sidebar */
+}
+
+.content-area {
+    padding: 25px 30px;
+    max-width: 1050px;
+    margin: 25px auto;
+    background-color: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.07);
+}
+
+.page-header h1 {
+    color: #2c3e50; /* Azul oscuro */
+    margin-bottom: 20px;
+    font-size: 1.9em;
+    font-weight: 600;
+    border-bottom: 3px solid #1abc9c; /* Verde azulado para un toque operativo */
+    padding-bottom: 12px;
+}
+
+/* Mensajes (reutiliza si tienes un CSS global) */
+.messages { list-style: none; padding: 0; margin-bottom: 20px; }
+.messages li { padding: 12px 18px; margin-bottom: 10px; border-radius: 5px; font-size: 0.95em; }
+.messages li.success { background-color: #d4edda; color: #155724; border: 1px solid #c3e6cb; }
+.messages li.error { background-color: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; }
+.messages li.info { background-color: #d1ecf1; color: #0c5460; border: 1px solid #bee5eb; }
+
+
+.table-responsive {
+    overflow-x: auto;
+}
+
+.table-pedidos {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    font-size: 0.96em;
+}
+
+.table-pedidos th,
+.table-pedidos td {
+    border: 1px solid #dfe3e9;
+    padding: 10px 14px;
+    text-align: left;
+    vertical-align: middle;
+}
+
+.table-pedidos thead th {
+    background-color: #34495e; /* Cabecera gris oscuro azulado */
+    color: #ffffff;
+    font-weight: 500; /* Un poco menos de peso */
+    text-transform: uppercase;
+    font-size: 0.88em;
+    letter-spacing: 0.4px;
+}
+
+.table-pedidos tbody tr:nth-child(even) {
+    background-color: #f8fafc;
+}
+
+.table-pedidos tbody tr:hover {
+    background-color: #f0f4f7;
+}
+
+.no-data {
+    text-align: center;
+    color: #526273;
+    margin-top: 25px;
+    padding: 20px;
+    background-color: #eef2f7;
+    border: 1px solid #d8dde4;
+    border-radius: 5px;
+}
+
+.btn { /* Estilos de botón */
+    padding: 8px 16px;
+    border-radius: 4px;
+    text-decoration: none;
+    font-size: 0.9em;
+    cursor: pointer;
+    border: none;
+    margin-left: 5px;
+    font-weight: 500;
+    transition: background-color 0.2s ease, box-shadow 0.2s ease;
+}
+.btn:hover {
+    box-shadow: 0 2px 5px rgba(0,0,0,0.15);
+}
+
+.btn-process { /* Botón específico para "Surtir Pedido" */
+    background-color: #1abc9c; /* Verde azulado */
+    color: white;
+}
+.btn-process:hover { background-color: #16a085; }
+
+.btn-sm { /* Si necesitas botones más pequeños para acciones */
+    padding: 5px 10px;
+    font-size: 0.8em;
+}
+
+/* Estilos para los estados del pedido */
+.status-pedido {
+    padding: 5px 10px;
+    border-radius: 15px; /* Más redondeado para efecto de "píldora" */
+    font-size: 0.85em;
+    font-weight: bold;
+    color: #fff; /* Color de texto blanco por defecto para los badges */
+    text-transform: capitalize;
+    display: inline-block; /* Para que el padding y border-radius funcionen bien */
+    min-width: 80px; /* Ancho mínimo para consistencia */
+    text-align: center;
+}
+
+.status-pendiente {
+    background-color: #ffc107; /* Amarillo */
+    color: #333; /* Texto oscuro para mejor contraste con amarillo */
+}
+
+.status-completado { /* Nombre de clase para el estado 'COMPLETADO' */
+    background-color: #28a745; /* Verde */
+}
+
+.status-cancelado { /* Nombre de clase para el estado 'CANCELADO' */
+    background-color: #dc3545; /* Rojo */
+}
+
+.status-surtido_parcial { /* Nombre de clase para 'SURTIDO_PARCIAL' */
+    background-color: #17a2b8; /* Azul claro/info */
+}
+
+.status-en_proceso { /* Nombre de clase para 'EN_PROCESO' */
+    background-color: #fd7e14; /* Naranja */
+}
+
+/* Mantén esta clase si la usas en tu template para texto no editable */
+.text-muted { 
+    color: #6c757d;
+    font-style: italic;
+    font-size: 0.9em;
+}

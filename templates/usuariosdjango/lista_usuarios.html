@@ -1,0 +1,68 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ titulo_pagina|default:"Lista de Usuarios" }}</title>
+    {# Enlazamos el archivo CSS externo que te proporcioné #}
+    <link rel="stylesheet" href="{% static 'css/global_styles.css' %}">
+</head>
+<body>
+    <div class="container">
+        <h1>{{ titulo_pagina|default:"Lista de Usuarios Registrados" }}</h1>
+        <a href="{% url 'usuariosdjango:agregar_usuario' %}" class="add-user-link">Agregar Nuevo Usuario</a>
+        {% if usuarios %}
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Username</th>
+                        <th>Nombres</th>
+                        <th>Apellidos</th>
+                        <th>Email</th>
+                        <th>Teléfono</th>
+                        <th>Activo</th>
+                        <th>Staff</th>
+                        <!-- {# Puedes añadir más columnas si lo deseas, ej. Fecha de Registro #}... -->
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for usuario in usuarios %}
+                    <tr>
+                        <td>{{ usuario.id }}</td>
+                        <td>{{ usuario.username }}</td>
+                        <td>{{ usuario.nombre|default:"N/A" }}</td>
+                        <td>{{ usuario.apellidos|default:"N/A" }}</td>
+                        <td>{{ usuario.email|default:"N/A" }}</td>
+                        <td>{{ usuario.telefono|default:"N/A" }}</td>
+                        <td>
+                            {% if usuario.is_active %}
+                                <span class="status-active">Sí</span>
+                            {% else %}
+                                <span class="status-inactive">No</span>
+                            {% endif %}
+                        </td>
+                        <td>
+                            {% if usuario.is_staff %}
+                                <span class="status-active">Sí</span> {# Puedes usar la misma clase o una diferente para staff #}
+                            {% else %}
+                                <span class="status-inactive">No</span>
+                            {% endif %}
+                        </td>
+                        <!-- {# Aquí podrías poner enlaces para Editar/Ver Detalles/Eliminar en el futuro #} -->
+                        <td>
+                            <a href="#">Editar</a> |
+                            <a href="#">Eliminar</a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        {% else %}
+            <p class="no-users">No hay usuarios registrados.</p>
+        {% endif %}
+    </div>
+</body>
+</html>

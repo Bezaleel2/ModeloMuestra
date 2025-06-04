@@ -1,0 +1,141 @@
+/* static/css/administracion/lista_pedidos.css */
+body {
+    font-family: 'Roboto', 'Helvetica Neue', Arial, sans-serif;
+    background-color: #f4f7fc; /* Un fondo suave y moderno */
+    color: #333d48;
+    margin: 0;
+    padding: 0;
+    line-height: 1.6;
+}
+
+.main-container {
+    /* Para layouts con sidebar, ajustar aquí */
+}
+
+.content-area {
+    flex-grow: 1;
+    padding: 30px 35px;
+    max-width: 1000px; /* Ancho adecuado para tablas de resumen */
+    margin: 30px auto;
+    background-color: #ffffff;
+    border-radius: 10px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+}
+
+.page-header h1 {
+    color: #1c3faa; /* Azul corporativo/profesional */
+    margin-bottom: 25px;
+    font-size: 2em;
+    font-weight: 600;
+    border-bottom: 3px solid #5c7cfa; /* Borde inferior en un tono más claro de azul */
+    padding-bottom: 15px;
+}
+
+.actions-bar {
+    margin-bottom: 25px;
+    text-align: right;
+}
+
+.btn {
+    padding: 10px 18px;
+    border: none;
+    border-radius: 5px;
+    font-size: 0.95em;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-block;
+    transition: all 0.2s ease-in-out;
+    font-weight: 500;
+    text-transform: capitalize;
+}
+
+.btn-success {
+    background-color: #34a853; /* Verde Google */
+    color: white;
+}
+.btn-success:hover { background-color: #2c8f42; transform: translateY(-1px); box-shadow: 0 3px 6px rgba(0,0,0,0.1); }
+
+.btn-view { background-color: #4285f4; color: white; } /* Azul Google */
+.btn-view:hover { background-color: #3367d6; }
+
+.btn-edit { background-color: #ffc107; color: #212529; } /* Amarillo advertencia Bootstrap */
+.btn-edit:hover { background-color: #e0a800; }
+
+.btn-danger {
+    background-color: #ea4335; /* Rojo Google */
+    color: white;
+}
+.btn-danger:hover { background-color: #c53727; transform: translateY(-1px); box-shadow: 0 3px 6px rgba(0,0,0,0.1); }
+
+.btn-sm {
+    padding: 6px 12px;
+    font-size: 0.85em;
+    margin-right: 5px; /* Espacio entre botones de acción */
+}
+.btn-sm:last-child {
+    margin-right: 0;
+}
+
+
+.table-responsive {
+    overflow-x: auto;
+}
+
+.table-pedidos {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    font-size: 0.98em;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+}
+
+.table-pedidos th,
+.table-pedidos td {
+    border: 1px solid #e3e6f0; /* Borde suave */
+    padding: 12px 15px;
+    text-align: left;
+    vertical-align: middle;
+}
+
+.table-pedidos thead th {
+    background-color: #4e73df; /* Azul primario de SB Admin */
+    color: #ffffff;
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 0.8em;
+    letter-spacing: 0.05em;
+}
+
+.table-pedidos tbody tr:nth-child(even) {
+    background-color: #f8f9fc;
+}
+
+.table-pedidos tbody tr:hover {
+    background-color: #e3e6f0;
+}
+
+.no-data {
+    text-align: center;
+    color: #5a5c69; /* Gris oscuro de SB Admin */
+    margin-top: 30px;
+    padding: 25px;
+    background-color: #f8f9fc;
+    border: 1px solid #e3e6f0;
+    border-radius: 5px;
+    font-size: 1.05em;
+}
+
+.no-data a {
+    color: #4e73df;
+    font-weight: 500;
+}
+.no-data a:hover {
+    text-decoration: underline;
+}
+
+/* Mensajes de Django */
+.messages { list-style: none; padding: 0; margin-bottom: 20px; }
+.messages li { padding: 12px 18px; margin-bottom: 10px; border-radius: 5px; font-size: 0.95em; }
+.messages li.success { background-color: #d1e7dd; color: #0f5132; border: 1px solid #badbcc; }
+.messages li.error { background-color: #f8d7da; color: #842029; border: 1px solid #f5c2c7; }
+.messages li.info { background-color: #cff4fc; color: #055160; border: 1px solid #b6effb; }

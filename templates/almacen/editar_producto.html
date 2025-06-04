@@ -1,0 +1,84 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ titulo_pagina|default:"Editar Producto" }}</title>
+    {# Reutiliza el CSS de agregar_producto si el layout es similar, o crea uno nuevo #}
+    <link rel="stylesheet" href="{% static 'css/almacen/agregar_producto.css' %}">
+</head>
+<body>
+    <div class="main-container">
+        <div class="content-area">
+            <header class="page-header">
+                <h1>{{ titulo_pagina }}</h1>
+            </header>
+
+            {% if messages %}
+                <ul class="messages">
+                    {% for message in messages %}
+                        <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+
+            <div class="form-wrapper">
+                <form method="post" novalidate class="product-form">
+                    {% csrf_token %}
+                    
+                    {# Renderizamos campos para el layout especial #}
+                    <div class="form-header-fields">
+                        <div class="form-field field-numero_orden_compra">
+                            {{ form.numero_orden_compra.label_tag }}
+                            {{ form.numero_orden_compra }}
+                            {% for error in form.numero_orden_compra.errors %}<div class="form-error">{{ error }}</div>{% endfor %}
+                        </div>
+                        <div class="form-field field-proveedor">
+                            {{ form.proveedor.label_tag }}
+                            {{ form.proveedor }}
+                            {% for error in form.proveedor.errors %}<div class="form-error">{{ error }}</div>{% endfor %}
+                        </div>
+                    </div>
+
+                    <div class="form-field field-nombre_producto">
+                        {{ form.nombre_producto.label_tag }}
+                        {{ form.nombre_producto }}
+                        {% for error in form.nombre_producto.errors %}<div class="form-error">{{ error }}</div>{% endfor %}
+                    </div>
+                    
+                    {# Campo de cantidad actual (solo lectura) y cantidad a agregar #}
+                    <div class="form-row">
+                        <div class="form-field field-cantidad">
+                            {{ form.cantidad.label_tag }}
+                            {{ form.cantidad }} {# Este es el total actual, debería ser readonly por el form #}
+                            {% for error in form.cantidad.errors %}<div class="form-error">{{ error }}</div>{% endfor %}
+                        </div>
+                        <div class="form-field field-cantidad_a_agregar">
+                            {{ form.cantidad_a_agregar.label_tag }}
+                            {{ form.cantidad_a_agregar }}
+                            {% for error in form.cantidad_a_agregar.errors %}<div class="form-error">{{ error }}</div>{% endfor %}
+                        </div>
+                    </div>
+
+                    {% for field in form %}
+                        {% if field.name not in "numero_orden_compra,proveedor,nombre_producto,cantidad,cantidad_a_agregar" %}
+                        <div class="form-field">
+                            {{ field.label_tag }}
+                            {{ field }}
+                            {% if field.help_text %}<small class="helptext">{{ field.help_text }}</small>{% endif %}
+                            {% for error in field.errors %}<div class="form-error">{{ error }}</div>{% endfor %}
+                        </div>
+                        {% endif %}
+                    {% endfor %}
+
+                    <div class="form-actions">
+                        <button type="submit" class="btn btn-primary">Actualizar Producto</button>
+                        <a href="{% url 'almacen:lista_productos' %}" class="btn btn-secondary">Cancelar</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

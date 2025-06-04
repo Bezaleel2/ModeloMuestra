@@ -1,0 +1,168 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pantalla de Inicio</title>
+    <link rel="stylesheet" href="{% static 'css/pantalla_inicio.css' %}">
+</head>
+<body>
+    <div class="container">
+        <aside id="sidebar">
+            <div class="logo">
+                {# ... tu logo ... #}
+                <span>LOGO</span>
+            </div>
+
+            <ul class="nav-options"> 
+                
+                <!-- {# 1. Menú Administración #} -->
+                <!-- {# Visible para: Superuser, Administrativo, Jefe de piso #} -->
+                <!-- {% if user.is_superuser or user.is_administrativo or user.is_jefe_de_piso %} -->
+                <li class="nav-item">
+                    <a href="#" data-title="Pedidos (Admin)" data-id="admin-pedidos" class="has-submenu">
+                        <img src="{% static 'img/administracion.png' %}" alt="Administración Icono" class="nav-icon">
+                        <span class="nav-text">Administración</span>
+                        <span class="submenu-arrow"></span>
+                    </a>
+                    <ul class="menu vertical nested">
+                        <li><a href="#" data-id="admin-sub1" data-title="Agregar pedido" data-url="{% url 'administracion:agregar_pedido' %}">Agregar pedido</a></li>
+                        <li><a href="#" data-id="admin-sub2" data-title="Lista de Pedidos" data-url="{% url 'administracion:lista_pedidos' %}">Pedidos</a></li>
+                        <!-- {# ... otros subitems ... #} -->
+                    </ul>
+                </li>
+                {% endif %}
+
+                <!-- {# 2. Menú Proyectos #} -->
+                <!-- {# Visible para: Superuser, Operativo, Jefe de piso #} -->
+                {% if user.is_superuser or user.is_operativo or user.is_jefe_de_piso %}
+                <li class="nav-item">
+                    <a href="#" data-title="Proyectos" data-id="proyectos-lista" class="has-submenu">
+                        <img src="{% static 'img/proyecto.png' %}" alt="Proyectos Icono" class="nav-icon">
+                        <span class="nav-text">Proyectos</span>
+                        <span class="submenu-arrow"></span>
+                    </a>
+                    <ul class="menu vertical nested">
+                        <li><a href="#" data-id="proy-sub1" data-title="Agregar Obra" data-url="{% url 'proyectos:agregar_obra' %}">Agregar Obra</a></li>
+                        <li><a href="#" data-id="proy-sub2" data-title="Lista de Obras" data-url="{% url 'proyectos:lista_obras' %}">Lista de Obras</a></li>
+                        <!-- {# ... otros subitems ... #} -->
+                    </ul>
+                </li>
+                {% endif %}
+
+                <!-- {# 3. Menú Almacén #} -->
+                <!-- {# Visible para: Superuser, Administrativo (condicionado), Operativo, Administrador secundario #} -->
+                <!-- {# Jefe de piso: NO ve Almacén #} -->
+                {% if user.is_superuser or user.is_administrativo or user.is_operativo or user.is_admin_secundario %}
+                <li class="nav-item">
+                    <a href="#" data-title="Almacén" data-id="almacen-main" class="has-submenu">
+                        <img src="{% static 'img/almacen.png' %}" alt="Almacén Icono" class="nav-icon">
+                        <span class="nav-text">Almacén</span>
+                        <span class="submenu-arrow"></span>
+                    </a>
+                    <ul class="menu vertical nested">
+                        <!-- {# Submenú "Inventario": Visible para Superuser, Administrativo, Operativo, Admin Secundario #} -->
+                        {% if user.is_superuser or user.is_administrativo or user.is_operativo or user.is_admin_secundario %}
+                        <li><a href="#" data-id="alm-sub-inventario" data-title="Inventario" data-url="{% url 'almacen:lista_productos' %}">Inventario</a></li>
+                        {% endif %}
+                        
+                        <!-- {# Submenú "Agregar Producto" y otros: Visible para Superuser, Operativo, Admin Secundario. NO para Administrativo (solo). #} -->
+                        {% if user.is_superuser or user.is_operativo or user.is_admin_secundario %}
+                        <li><a href="#" data-id="alm-sub-agregar" data-title="Agregar Producto" data-url="{% url 'almacen:agregar_producto' %}">Agregar Producto</a></li>
+                        <!-- {# ... otros subitems de Almacén ... #} -->
+                        {% endif %}
+                    </ul>
+                </li>
+                {% endif %}
+                
+                <!-- {# 4. Menú Proveedores #} -->
+                <!-- {# Visible para: Superuser, Operativo, Administrador secundario #} -->
+                <!-- {# Jefe de piso: NO ve Proveedores #} -->
+                {% if user.is_superuser or user.is_operativo or user.is_admin_secundario %}
+                <li class="nav-item"> 
+                    <a href="#" class="has-submenu" data-title="Proveedores" data-id="proveedores-lista"> 
+                        <img src="{% static 'img/proveedor.png' %}" alt="Proveedores Icono" class="nav-icon">
+                        <span class="nav-text">Proveedores</span>
+                        <span class="submenu-arrow"></span>
+                    </a>
+                    <ul class="menu vertical nested">
+                        <li><a href="#" data-id="prov-lista" data-title="Lista Proveedores" data-url="{% url 'proveedores:lista_proveedores' %}">Ver Lista</a></li>
+                        <li><a href="#" data-id="prov-sub1" data-title="Agregar Proveedor" data-url="{% url 'proveedores:agregar_proveedor' %}">Agregar Proveedor</a></li>
+                        <!-- {# ... otros subitems ... #} -->
+                    </ul>
+                </li>
+                {% endif %}
+
+                <!-- {# 5. Menú Operativo (el menú principal llamado "Operativo") #} -->
+                <!-- {# Visible para: Superuser, Operativo, Jefe de piso #} -->
+                {% if user.is_superuser or user.is_operativo or user.is_jefe_de_piso %}
+                <li class="nav-item"> 
+                    <a href="#" data-title="Pedidos Operativo" data-id="operativo-pedidos" class="has-submenu">
+                        <img src="{% static 'img/operativo.png' %}" alt="Operativo Icono" class="nav-icon">
+                        <span class="nav-text">Operativo</span>
+                        <span class="submenu-arrow"></span>
+                    </a>
+                    <ul class="menu vertical nested">
+                        <li><a href="#" data-id="op-sub1" data-title="Pedidos por Surtir" data-url="{% url 'operativo:lista_pedidos_surtir' %}">Pedidos por Surtir</a></li>
+                        <!-- {# ... otros subitems ... #} -->
+                    </ul>
+                </li>
+                {% endif %}
+                
+                <!-- {# 6. Menú Usuarios #} -->
+                <!-- {# Visible para: Superuser, Administrador secundario #} -->
+                <!-- {# Jefe de piso: NO ve Usuarios#} -->
+                {% if user.is_superuser or user.is_admin_secundario %}
+                <li class="nav-item"> 
+                    <a href="#" data-title="Usuarios" data-id="usuarios-lista" class="has-submenu">
+                        <img src="{% static 'img/usuarios.png' %}" alt="Usuarios Icono" class="nav-icon">
+                        <span class="nav-text">Usuarios</span>
+                        <span class="submenu-arrow"></span>
+                    </a>
+                    <ul class="menu vertical nested">
+                        <li><a href="#" data-id="user-sub1" data-title="Agregar Usuario" data-url="{% url 'usuariosdjango:agregar_usuario' %}">Agregar Usuario</a></li>
+                        <li><a href="#" data-id="user-sub2" data-title="Lista de Usuarios" data-url="{% url 'usuariosdjango:lista_usuarios' %}">Lista de usuarios</a></li>
+                        <!-- {# ... otros subitems ... #} -->
+                    </ul>
+                </li>
+                {% endif %}
+
+                <!-- {# Enlace de Cerrar Sesión #} -->
+                {% if user.is_authenticated %}
+                <li class="nav-item nav-item-logout">
+                    <a href="{% url 'logout' %}">
+                        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
+                        <span class="nav-text">Cerrar Sesión</span>
+                    </a>
+                </li>
+                {% endif %}
+            </ul>
+
+            <button id="toggle-sidebar" class="toggle-sidebar">
+                <svg id="chevron-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="15 6 9 12 15 18"></polyline>
+                </svg>
+            </button>
+        </aside>
+
+        <main id="content">
+            <!-- {# ... tu contenido principal ... #} -->
+            <header class="main-header"> 
+                <h1>Pantalla de Inicio</h1>
+                <p>Bienvenido a tu sistema de gestión</p>
+            </header>
+            
+            <div id="tab-container">
+                <div id="tab-bar"></div>
+                <div id="tab-content-area">
+                    <div id="welcome-message" class="tab-pane active">
+                        <h2>"Eslogan de la empresa"</h2>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+    <script src="{% static 'js/pantalla_inicio.js' %}" defer></script>
+</body>
+</html>

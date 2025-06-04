@@ -1,0 +1,71 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ titulo_pagina|default:"Confirmar Eliminación" }}</title>
+    {# Puedes usar el mismo CSS de la lista o uno específico si lo creas #}
+    <link rel="stylesheet" href="{% static 'css/administracion/lista_pedidos.css' %}">
+    <style>
+        /* Estilos adicionales o específicos para la página de confirmación si son necesarios */
+        .confirmation-box {
+            max-width: 500px;
+            margin: 40px auto;
+            padding: 30px;
+            background-color: #fff;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.07);
+            text-align: center;
+        }
+        .confirmation-box h1 {
+            color: #d9534f; /* Rojo para eliminación */
+            font-size: 1.5em;
+        }
+        .confirmation-box p {
+            margin-bottom: 15px;
+            font-size: 1.1em;
+        }
+        .confirmation-box .details {
+            text-align: left;
+            margin: 20px 0;
+            padding: 15px;
+            background-color: #f9f9f9;
+            border-left: 3px solid #d9534f;
+        }
+        .confirmation-box .warning {
+            color: #c9302c;
+            font-weight: bold;
+            margin-top: 20px;
+        }
+        .confirmation-actions {
+            margin-top: 30px;
+        }
+    </style>
+</head>
+<body>
+    <div class="confirmation-box">
+        <h1>{{ titulo_pagina }}</h1>
+
+        <p>¿Estás seguro de que deseas eliminar permanentemente el siguiente pedido?</p>
+        
+        <div class="details">
+            <p><strong>ID del Pedido:</strong> #{{ pedido.id }}</p>
+            <p><strong>Creado por:</strong> {{ pedido.nombre_creador }}</p>
+            <p><strong>Fecha:</strong> {{ pedido.fecha_pedido|date:"d/m/Y H:i" }}</p>
+            <p><strong>Número de Ítems:</strong> {{ pedido.items.count }}</p>
+        </div>
+
+        <p class="warning">¡Esta acción no se puede deshacer!</p>
+
+        <form method="post">
+            {% csrf_token %}
+            <div class="confirmation-actions">
+                <button type="submit" class="btn btn-danger">Sí, Eliminar Pedido</button>
+                <a href="{% url 'administracion:lista_pedidos' %}" class="btn btn-secondary">Cancelar</a>
+            </div>
+        </form>
+    </div>
+</body>
+</html>

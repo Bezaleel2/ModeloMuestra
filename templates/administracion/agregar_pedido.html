@@ -1,0 +1,91 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ titulo_pagina|default:"Agregar Pedido" }}</title>
+    <link rel="stylesheet" href="{% static 'css/administracion/agregar_pedido.css' %}">
+</head>
+<body>
+    <div class="main-container">
+        <div class="content-area">
+            <header class="page-header">
+                <h1>{{ titulo_pagina|default:"Agregar Pedido" }}</h1>
+            </header>
+
+            {% if messages %}
+                <ul class="messages">
+                    {% for message in messages %}
+                        <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+
+            <form method="post" novalidate class="pedido-form">
+                {% csrf_token %}
+
+                <fieldset class="pedido-info">
+                    <legend>Datos del Pedido</legend>
+                    {% for field in pedido_form %}
+                        <div class="form-field form-field-pedido">
+                            {{ field.label_tag }}
+                            {{ field }}
+                            {% for error in field.errors %}<div class="form-error">{{ error }}</div>{% endfor %}
+                            {% if field.help_text %}<small class="helptext">{{ field.help_text }}</small>{% endif %}
+                        </div>
+                    {% endfor %}
+                </fieldset>
+
+                <fieldset class="pedido-items">
+                    <legend>Materiales del Pedido</legend>
+                    {{ item_formset.management_form }} {# Necesario para que el formset funcione #}
+                    
+                    <div id="item-forms-container">
+                        {# Renderiza los formularios existentes (incluyendo los 'extra' iniciales) #}
+                        {% for form_item in item_formset %}
+                            <div class="item-form-row">
+                                {{ form_item.id }}
+                                <div class="form-field field-producto">
+                                    {{ form_item.producto }}
+                                    {% for error in form_item.producto.errors %}<div class="form-error">{{ error }}</div>{% endfor %}
+                                </div>
+                                <div class="form-field field-cantidad">
+                                    {{ form_item.cantidad }}
+                                    {% for error in form_item.cantidad.errors %}<div class="form-error">{{ error }}</div>{% endfor %}
+                                </div>
+                                {% if form_item.instance.pk and item_formset.can_delete %}
+                                <div class="form-field field-delete">
+                                    {{ form_item.DELETE.label_tag }}
+                                    {{ form_item.DELETE }}
+                                </div>
+                                {% endif %}
+                            </div>
+                        {% endfor %}
+                    </div>
+                    
+                    {# Template oculto para el formulario vacío que se clonará #}
+                    <div id="empty-form-template" style="display: none;">
+                        <div class="item-form-row"> {# Esta es la estructura que clonaremos #}
+                            {{ item_formset.empty_form.id }}
+                            <div class="form-field field-producto">
+                                {{ item_formset.empty_form.producto }}
+                            </div>
+                            <div class="form-field field-cantidad">
+                                {{ item_formset.empty_form.cantidad }}
+                            </div>
+                        </div>
+                    </div>
+                    <button type="button" id="add-item-button" class="btn btn-add-item">Agregar Otro Material</button>
+                </fieldset>
+
+                <div class="form-actions">
+                    <button type="submit" class="btn btn-primary">Guardar Pedido</button>
+                    <a href="{% url 'administracion:lista_pedidos' %}" class="btn btn-secondary">Cancelar</a>
+                </div>
+            </form>
+        </div>
+    </div>
+    <script src="{% static 'js/administracion/agregar_pedido.js' %}"></script>
+</body>
+</html>

@@ -1,0 +1,75 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ titulo_pagina|default:"Listado de Obras" }}</title>
+    <link rel="stylesheet" href="{% static 'css/global_styles.css' %}">
+    <!-- {# Si tienes un CSS específico para lista_obras, añádelo aquí también #} -->
+    <link rel="stylesheet" href="{% static 'css/proyectos/lista_obras.css' %}">
+    <!-- {# AÑADIDO: Enlace al CSS de impresión #} -->
+    <link rel="stylesheet" href="{% static 'css/print.css' %}" media="print">
+</head>
+<body>
+    <div class="main-container">
+        <div class="content-area">
+            <header class="page-header">
+                <h1>{{ titulo_pagina|default:"Listado de Obras" }}</h1>
+            </header>
+
+            <div class="actions-bar no-print">
+                <!-- {# Añadimos 'no-print' #} -->
+                <a href="{% url 'proyectos:agregar_obra' %}" class="btn btn-success">Agregar Nueva Obra</a>
+                <!-- {# AÑADIDO: Botón de Imprimir #} -->
+                <button type="button" onclick="window.print();" class="btn btn-secondary">
+                    Imprimir Lista
+                </button>
+            </div>
+
+            {% if messages %}
+                <ul class="messages">
+                    {% for message in messages %}
+                        <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+
+            {% if obras %}
+                <div class="table-responsive">
+                    <table class="data-table"> 
+                        <!-- {/* print.css ya tiene estilos para .data-table */} -->
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Nombre de la Obra</th>
+                                <th>Encargado</th>
+                                <th>Fecha Estimada de Entrega</th>
+                                <th>Ubicación</th>
+                                <th class="no-print">Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for obra in obras %}
+                            <tr>
+                                <td>{{ obra.id }}</td>
+                                <td>{{ obra.nombre_obra }}</td>
+                                <td>{{ obra.encargado_obra|default:"N/A" }}</td>
+                                <td>{{ obra.fecha_estimada_entrega|date:"d/m/Y"|default:"N/A" }}</td>
+                                <td>{{ obra.ubicacion|default:"N/A" }}</td>
+                                <td class="no-print">
+                                    <a href="#" class="btn btn-sm btn-info">Editar</a>
+                                    <a href="#" class="btn btn-sm btn-danger">Eliminar</a>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            {% else %}
+                <p class="no-data">No hay obras registradas todavía. ¡Intenta <a href="{% url 'proyectos:agregar_obra' %}">agregar una nueva</a>!</p>
+            {% endif %}
+        </div>
+    </div>
+</body>
+</html>

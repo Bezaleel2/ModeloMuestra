@@ -1,0 +1,48 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ titulo_pagina|default:"Agregar Obra" }}</title>
+    <link rel="stylesheet" href="{% static 'css/proyectos/agregar_obra.css' %}">
+</head>
+<body>
+    <div class="main-container">
+
+        <div class="content-area">
+            <header class="page-header">
+                <h1>{{ titulo_pagina|default:"Agregar Obra" }}</h1>
+            </header>
+
+            <div class="form-container">
+                <form method="post" novalidate>
+                    {% csrf_token %}
+
+                    {# Renderizar campos uno por uno para más control o usar {{ form.as_p }} etc. #}
+                    {% for field in form %}
+                        <div class="form-field">
+                            {{ field.label_tag }}
+                            {{ field }}
+                            {% if field.help_text %}
+                                <small class="helptext">{{ field.help_text }}</small>
+                            {% endif %}
+                            {% for error in field.errors %}
+                                <div class="form-error">{{ error }}</div>
+                            {% endfor %}
+                        </div>
+                    {% endfor %}
+
+                    {# O la forma más simple: #}
+                    {# {{ form.as_p }} #}
+
+                    <div class="form-actions">
+                        <button type="submit" class="btn btn-primary">Guardar Obra</button>
+                        <a href="{% url 'proyectos:lista_obras' %}" class="btn btn-secondary">Cancelar</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

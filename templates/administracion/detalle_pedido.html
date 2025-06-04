@@ -1,0 +1,70 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ titulo_pagina|default:"Detalles del Pedido" }}</title>
+    <link rel="stylesheet" href="{% static 'css/administracion/detalle_pedido.css' %}">
+</head>
+<body>
+    <div class="main-container">
+        <div class="content-area detail-page">
+            <header class="page-header">
+                <h1>{{ titulo_pagina }}</h1>
+            </header>
+
+            <div class="pedido-info-card">
+                <h2>Información General del Pedido</h2>
+                <div class="info-grid">
+                    <div class="info-item">
+                        <span class="info-label">ID del Pedido:</span>
+                        <span class="info-value">#{{ pedido.id }}</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">Creado por:</span>
+                        <span class="info-value">{{ pedido.nombre_creador }}</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">Fecha del Pedido:</span>
+                        <span class="info-value">{{ pedido.fecha_pedido|date:"d/m/Y H:i:s" }}</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="pedido-items-card">
+                <h2>Materiales Incluidos en el Pedido</h2>
+                {% if pedido.items.all %}
+                    <div class="table-responsive">
+                        <table class="table-items">
+                            <thead>
+                                <tr>
+                                    <th>Producto</th>
+                                    <th>Cantidad Solicitada</th>
+                                    <th>ID Producto Almacén</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for item in pedido.items.all %}
+                                <tr>
+                                    <td>{{ item.producto.nombre_producto }}</td>
+                                    <td>{{ item.cantidad }}</td>
+                                    {# <td>{{ item.producto.id }}</td> #}
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                {% else %}
+                    <p class="no-data">Este pedido no tiene ítems asociados.</p>
+                {% endif %}
+            </div>
+
+            <div class="detail-actions">
+                {# <a href="#" class="btn btn-edit">Editar Pedido</a> #}
+                <a href="{% url 'administracion:lista_pedidos' %}" class="btn btn-secondary">Volver al Listado</a>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
