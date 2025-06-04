@@ -1,30 +1,35 @@
-from .base import *
-import dj_database_url
+# ModeloMuestra/settings/local.py
+from .base import * # Importa todas las configuraciones base
 
-# SECURITY WARNING: don't run with debug turned on in production!
+# --- CONFIGURACIONES ESPECÍFICAS DE DESARROLLO LOCAL ---
+
+# DEBUG: Siempre True en desarrollo local (sobrescribe el default de base.py si DJANGO_DEBUG no está en .env)
 DEBUG = True
 
-ALLOWED_HOSTS = []
-RENDER_EXTERNAL_HOSTNAME = os.environ.get('RENDER_EXTERNAL_HOSTNAME')
-if RENDER_EXTERNAL_HOSTNAME:
-    ALLOWED_HOSTS.append(RENDER_EXTERNAL_HOSTNAME)
+# SECRET_KEY:
+# base.py ya intenta cargar DJANGO_SECRET_KEY desde .env.
+# Si quieres una clave específica solo para local y diferente a la de .env,
+# puedes definirla aquí, pero usualmente .env es suficiente.
+# Ejemplo: SECRET_KEY = 'mi_clave_local_super_secreta_diferente_a_la_de_env'
 
-DATABASES = {
-    'default': {
-        # Configuración por defecto, por ejemplo para SQLite si DATABASE_URL no está definida
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
-}
+# ALLOWED_HOSTS: Para desarrollo local
+ALLOWED_HOSTS = ['127.0.0.1', 'localhost']
 
-DATABASE_URL_ENV = os.environ.get('DATABASE_URL')
-if DATABASE_URL_ENV:
-    print(f"DEBUG: Encontrada DATABASE_URL del entorno: {DATABASE_URL_ENV[:30]}...") # Para depurar que sí la lee
-    DATABASES['default'] = dj_database_url.parse(DATABASE_URL_ENV)
-else:
-    print("DEBUG: NO se encontró DATABASE_URL del entorno, usando default de SQLite.")
+# DATABASE:
+# La configuración de base.py ya maneja DATABASE_URL desde .env.
+# Si no tienes DATABASE_URL en tu .env, usará el default de SQLite de base.py.
+# No necesitas redefinir DATABASES aquí a menos que quieras forzar algo diferente
+# a lo que .env o el default de base.py provean.
 
-STATIC_URL = 'static/'
-STATICFILES_DIRS = [BASE_DIR / "static"]
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedStaticFilesStorage'
+# STATICFILES_STORAGE:
+# Para desarrollo con DEBUG=True, el servidor de desarrollo de Django sirve los estáticos.
+# Si usas `whitenoise.runserver_nostatic` en INSTALLED_APPS (como está en base.py),
+# WhiteNoise los servirá. No necesitas `CompressedManifestStaticFilesStorage` aquí.
+
+# Configuración de Email para desarrollo (imprimir a consola)
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+
+# Opcional: Django Debug Toolbar (si la usas)
+# INSTALLED_APPS += ['debug_toolbar']
+# MIDDLEWARE = ['debug_toolbar.middleware.DebugToolbarMiddleware'] + MIDDLEWARE
+# INTERNAL_IPS = ['127.0.0.1']
